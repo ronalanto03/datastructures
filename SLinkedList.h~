@@ -1,0 +1,97 @@
+#include <cstddef>
+#include <iostream>
+
+template <typename T>
+class SLinkedList
+{
+  class Node
+  {
+    private:
+      friend class SLinkedList;
+      T key;
+      Node* next;
+
+
+    public:
+      Node(const T& _key):key(_key), next(nullptr)
+      {/*empty*/}
+
+  };
+  private:
+    Node* head;
+    Node* tail;
+    size_t size;
+
+  public:
+    SLinkedList():head(nullptr), tail(nullptr), size(0)
+    {/*empty*/}
+
+    //-------------------------------------------------------------------------
+    size_t getSize() const
+    {
+      return size;
+    }
+
+    //-------------------------------------------------------------------------
+    void pushFront(const T& key)
+    {
+      Node* node = new Node(key);
+      node->next = head;
+      head = node;
+      if(tail == nullptr)
+      {
+        tail = head;
+      }
+      size++;
+    }
+
+    //-------------------------------------------------------------------------
+    T& TopFront()
+    {
+      return head->key;
+    }
+
+    //-------------------------------------------------------------------------
+    void PopFront()
+    {
+      if(head == NULL)
+      {
+        return;//nothing to pop
+      }
+      Node* tmp = head;
+      head = head->next;
+      delete tmp;
+      if(head == NULL)
+      {
+        tail = NULL;
+      }
+      size--;
+    }
+
+    //-------------------------------------------------------------------------
+    void pushBack(const T& key)
+    {
+      Node* node = new Node(key);
+      if(tail != nullptr)
+      {
+        tail->next = node;
+        tail = node;
+      }
+      else
+      {
+        head = tail = node;
+      }
+    }
+
+    //-------------------------------------------------------------------------
+    //Test purpose methods
+    void print_all()
+    {
+      for(Node* currNode = head; currNode != NULL; currNode = currNode->next)
+      {
+        std::cout<<currNode->key<<" ";
+      }
+    }
+
+
+};
