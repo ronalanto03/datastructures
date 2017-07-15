@@ -126,3 +126,59 @@ TEST_F ( tester_slinkedlist, AddBefore )
    ASSERT_EQ(3, list.getHead()->getNext()->getNext()->getKey());
    ASSERT_EQ(4, list.getHead()->getNext()->getNext()->getNext()->getKey());
 }
+
+//-----------------------------------------------------------------------------
+TEST_F ( tester_slinkedlist, Erase )
+{
+   SLinkedList<int> list;
+   SLinkedList<int>::Node* node = nullptr;
+
+   for(int i = 1; i <= 3; i++)
+   {
+      list.pushBack(i);
+   }
+   node = list.getHead();
+   ASSERT_EQ(3, list.getSize());
+   ASSERT_EQ(1, node->getKey());
+   ASSERT_EQ(2, node->getNext()->getKey());
+   ASSERT_EQ(3, node->getNext()->getNext()->getKey());
+
+   list.erase(2);
+   ASSERT_EQ(2, list.getSize());
+   ASSERT_EQ(1, node->getKey());
+   ASSERT_EQ(3, node->getNext()->getKey());
+
+   list.addAfter(list.getHead(), 2);
+   ASSERT_EQ(3, list.getSize());
+   ASSERT_EQ(1, node->getKey());
+   ASSERT_EQ(2, node->getNext()->getKey());
+   ASSERT_EQ(3, node->getNext()->getNext()->getKey());
+
+   list.erase(1);
+   node = list.getHead();
+   ASSERT_EQ(2, list.getSize());
+   ASSERT_EQ(2, node->getKey());
+   ASSERT_EQ(3, node->getNext()->getKey());
+
+   list.pushFront(1);
+   node = list.getHead();
+   list.erase(3);
+   ASSERT_EQ(2, list.getSize());
+   ASSERT_EQ(1, node->getKey());
+   ASSERT_EQ(2, node->getNext()->getKey());
+   ASSERT_EQ(nullptr, node->getNext()->getNext());
+
+   list.popBack();
+   node = list.getHead();
+   ASSERT_EQ(1, list.getSize());
+   ASSERT_EQ(1, node->getKey());
+   ASSERT_EQ(nullptr, node->getNext());
+   list.erase(1);
+   ASSERT_EQ(0, list.getSize());
+   ASSERT_EQ(nullptr, list.getHead());
+   ASSERT_EQ(nullptr, list.getTail());
+   ASSERT_TRUE(list.empty());
+
+
+
+}

@@ -154,6 +154,7 @@ class SLinkedList
             }
             delete tail;
             tail = currNode;
+            tail->next = nullptr;
          }
          size--;
       }
@@ -183,7 +184,9 @@ class SLinkedList
          if(node == tail)
          {
             tail = node;
+            tail->next = nullptr;
          }
+         size++;
       }
 
       //-------------------------------------------------------------------------
@@ -207,7 +210,51 @@ class SLinkedList
             head = newNode;
          }
          newNode->next = node;
+         size++;
       }
+
+      //-------------------------------------------------------------------------
+      void erase(const T& key)
+      {
+         if(empty())
+         {
+            return;
+         }
+
+         Node* prevNode = nullptr, *currNode = head;
+         while(currNode != nullptr && currNode->key != key)
+         {
+            prevNode = currNode;
+            currNode = currNode->next;
+         }
+
+         if(currNode == nullptr)
+         {
+            return;//key not found
+         }
+
+         if(prevNode == nullptr)
+         {
+            head = currNode->next;
+         }
+         else
+         {
+            prevNode->next = currNode->next;
+         }
+
+         if(currNode == tail)
+         {
+            tail = prevNode;
+            if(tail)
+            {
+               tail->next = nullptr;
+            }
+         }
+
+         delete currNode;
+         size--;
+      }
+
 
       //-------------------------------------------------------------------------
       //Test purpose methods
